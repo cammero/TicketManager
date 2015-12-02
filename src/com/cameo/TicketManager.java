@@ -46,6 +46,7 @@ public class TicketManager {
 
     private static void deleteTicketbyID(LinkedList<Ticket> ticketQueue) {
         Scanner a = new Scanner(System.in);
+        //received help from Matt Rowe on this while loop
         boolean ticketNotFound = true;
         while (ticketNotFound) {
             System.out.println("Enter ID of ticket to delete");
@@ -84,6 +85,7 @@ public class TicketManager {
         Scanner a = new Scanner(System.in);
         boolean ticketNotFound = true;
         String response = "";
+
         while (ticketNotFound) {
             if (deleteByChoice.equals("name")) {
                 System.out.println("Enter name of the person who reported the ticket you would like to delete");
