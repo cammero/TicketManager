@@ -6,39 +6,44 @@ import java.util.LinkedList;
 public class TicketManager {
 
     public static void main(String[] args) {
+
         LinkedList<Ticket> ticketQueue = new LinkedList<Ticket>();
 
         Scanner sc = new Scanner(System.in);
 
         //Ask for some ticket info, create tickets, store in ticketQueue
         while (true) {
-            System.out.println("1. Enter Ticket\n2. Delete Ticket by ID\n3. Delete Ticket by Issue\n" +
-                    "4. Delete Ticket by Name\n5. Display All Tickets\n6. Quit");
-            int task = Integer.parseInt(sc.nextLine());
-            if (task == 1) {
-                //Call addTickets, which will let us enter any number of new tickets
-                addTickets(ticketQueue);
-            } else if (task == 2) {
-                //delete a ticket by ID
-                printAllTickets(ticketQueue); //display list for user
-                deleteTicketbyID(ticketQueue);
-            } else if (task == 3) {
-                //delete a ticket by Issue
-                printAllTickets(ticketQueue);   //display list for user
-                deleteTicketbyString(ticketQueue, "issue");
-            } else if (task == 4) {
-                //delete a ticket by name
-                printAllTickets(ticketQueue);   //display list for user
-                deleteTicketbyString(ticketQueue, "name");
-            } else if (task == 6) {
-                //Quit. Future prototype may want to save all tickets to a file
-                System.out.println("Quitting program");
-                break;
-            } else {
-                //this will happen for 5 or any other selection that is a valid int
-                //TODO Program crashes if you enter anything else - please fix
-                //Default will be print all tickets
-                printAllTickets(ticketQueue);
+            try {
+                System.out.println("1. Enter Ticket\n2. Delete Ticket by ID\n3. Delete Ticket by Issue\n" +
+                        "4. Delete Ticket by Name\n5. Display All Tickets\n6. Quit");
+                int task = Integer.parseInt(sc.nextLine());
+                if (task == 1) {
+                    //Call addTickets, which will let us enter any number of new tickets
+                    addTickets(ticketQueue);
+                } else if (task == 2) {
+                    //delete a ticket by ID
+                    printAllTickets(ticketQueue); //display list for user
+                    deleteTicketbyID(ticketQueue);
+                } else if (task == 3) {
+                    //delete a ticket by Issue
+                    printAllTickets(ticketQueue);   //display list for user
+                    deleteTicketbyString(ticketQueue, "issue");
+                } else if (task == 4) {
+                    //delete a ticket by name
+                    printAllTickets(ticketQueue);   //display list for user
+                    deleteTicketbyString(ticketQueue, "name");
+                } else if (task == 6) {
+                    //Quit. Future prototype may want to save all tickets to a file
+                    System.out.println("Quitting program");
+                    break;
+                } else {
+                    //this will happen for 5 or any other selection that is a valid int
+                    //Default will be print all tickets
+                    printAllTickets(ticketQueue);
+                }
+            }
+            catch (NumberFormatException nfex){
+                System.out.println("You've entered an invalid number. Please enter a valid number");
             }
         }
         sc.close();
@@ -112,18 +117,24 @@ public class TicketManager {
                 System.out.println("There are no tickets matching your search request");
                 break;
             } else {
+                //help from Andre in Learning Center to remove tickets from original queue, and add remaining ones back in later
+                for (Ticket ticket : listOfTicketsMatchingString){
+                    ticketQueue.remove(ticket);
+                }
                 System.out.println("Here is the list of tickets matching your search request");
                 for (Ticket ticket : listOfTicketsMatchingString){
                     System.out.println(ticket.toString());
                 }
-                //TODO This method only removes the ticket from listOfTicketsMatchingString, not from the general ticketQueue
+
                 deleteTicketbyID(listOfTicketsMatchingString);
+                for (Ticket ticket : listOfTicketsMatchingString){
+                    ticketQueue.add(ticket);
+                }
             }
             ticketNotFound = false;
         }
     }
 
-    //Move the adding ticket code to a method
     protected static void addTickets(LinkedList<Ticket> ticketQueue) {
         Scanner sc = new Scanner(System.in);
         boolean moreProblems = true;
